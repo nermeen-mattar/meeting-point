@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'MEMBER.MEMBER' | translate }} {{ 'DETAILS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="member-statistics-details" padding>
+  <div *ngIf="!displaySpinner" class="member-statistics-details__container">
+    <ion-label class="member-statistics-details__container__basic-info">
+      <ion-item>
+        <div>
+          <ion-text class="member-statistics-details__container__basic-info__all-participation">{{ actionType === 'participate'? ("MEMBER.ALL_PARTICIPATION" | translate) : ("MEMBER.ALL_CANCELATIONS" | translate) }}</ion-text>
+          <p>
+            <ion-text class="member-statistics-details__container__basic-info__from">{{ "FROM" | translate }}:</ion-text>
+            <ion-text class="member-statistics-details__container__basic-info__date-from">{{ dateRange?.dateFrom | date:"dd.MM.yyyy" }}</ion-text>
+          </p>
+          <p>
+            <ion-text class="member-statistics-details__container__basic-info__to">{{ "TO" | translate }}:</ion-text>
+            <ion-text class="member-statistics-details__container__basic-info__date-to">{{ dateRange?.dateTo | date:"dd.MM.yyyy" }}</ion-text>
+          </p>
+        </div>
+      </ion-item>
+      <ion-item>
+        <div>
+          <ion-text class="member-statistics-details__container__basic-info__member">{{ "MEMBER.MEMBER" | translate }}:</ion-text>
+          <ion-text class="member-statistics-details__container__basic-info__member-name">{{member}}</ion-text>
+        </div>
+      </ion-item>
+      <ion-item>
+        <div>
+          <ion-text class="member-statistics-details__container__basic-info__email">{{ "USER.EMAIL" | translate }}:</ion-text>
+          <ion-text class="member-statistics-details__container__basic-info__email-name">{{ email }}</ion-text>
+        </div>
+      </ion-item>
+    </ion-label>
+    <ion-item>
+      <ion-label>
+        <ion-text class="member-statistics-details__container__event">{{ 'EVENT.EVENT' | translate }}</ion-text>
+      </ion-label>
+      <span slot="end">
+        <ion-label>
+          <ion-text class="member-statistics-details__container__participation-status">{{ 'EVENT.PARTICIPATION_STATUS' | translate }}</ion-text>
+        </ion-label>
+      </span>
+    </ion-item>
+    <ion-list no-padding class="member-statistics-details__container__list" *ngFor="let event of events; let i=index">
+      <ion-item>
+        <ion-label text-wrap>
+          <p class="member-statistics-details__container__list__event-name">{{ event.eventName }}</p>
+          <p class="member-statistics-details__container__list__event-date">{{ event.date | date:"dd.MM.yyyy" }}</p>
+        </ion-label>
+        <span slot="end">
+          <ion-label>
+            <ion-text class="member-statistics-details__container__list__number-of-participation">{{ event.numberOfParticipations }}</ion-text>
+            <ion-text class="member-statistics-details__container__list__event-min-max" *ngIf="(event.minCriticalValue || event.minCriticalValue === 0 ) || (event.maxCriticalValue || event.maxCriticalValue === 0 )">
+              (<ion-text *ngIf="event.minCriticalValue || event.minCriticalValue === 0">{{ 'EVENT.MIN' | translate }}: {{ event.minCriticalValue }}</ion-text>
+              <ion-text *ngIf="(event.minCriticalValue || event.minCriticalValue === 0 ) && (event.maxCriticalValue || event.maxCriticalValue === 0 )">, </ion-text>
+              <ion-text *ngIf="event.maxCriticalValue || event.maxCriticalValue === 0">{{'EVENT.MAX' | translate}}: {{event.maxCriticalValue}}</ion-text>)
+            </ion-text>
+            <ion-icon name="alert" *ngIf="((event.minCriticalValue || event.minCriticalValue === 0 ) && event.minCriticalValue > event.numberOfParticipations) ||
+              ((event.maxCriticalValue || event.maxCriticalValue === 0 ) && event.maxCriticalValue < event.numberOfParticipations); else success"
+              class="member-statistics-details__container__list__error"></ion-icon>
+            <ng-template #success>
+              <ion-icon class="member-statistics-details__container__list__success" name="checkmark-circle"></ion-icon>
+            </ng-template>
+          </ion-label>
+        </span>
+      </ion-item>
+    </ion-list>
+  </div>
+  <ion-spinner class="member-statistics-details__mp-page-spinner" name="crescent" color="primary" *ngIf="displaySpinner"></ion-spinner>
+</ion-content>

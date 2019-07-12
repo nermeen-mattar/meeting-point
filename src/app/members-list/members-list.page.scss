@@ -1,0 +1,67 @@
+@import "./../../theme/variables.scss";
+@import "../../theme/elements.scss";
+
+.member-list {
+  &__item {
+    &__options {
+      &__option {
+        @extend .mp-item-sliding-option;
+      }
+    }
+  }
+  &__inner-header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    &__team {
+      width: 33%;
+    }
+    &__select-team {
+      max-width: 100%;
+    }
+  }
+  &__visible {
+    visibility: visible;
+  }
+  &__hide {
+    display: none;
+  }
+  &__active{
+    color: $mp-color-gray-shade-10;
+    display: block;
+    visibility: visible;
+  }
+  &__deactive {
+    color: $mp-color-gray-shade-3;
+    display: block;
+    visibility: visible;
+  }
+  &__member, &__admin, &__unconfirmed {
+    position: relative;
+    bottom: 3px;
+    font-weight: 500;
+    margin: 10px 10px 10px 0;
+  }
+  &__member {
+    color: $mp-color-gray-shade-10;
+  }
+  &__not-found {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  &__mp-page-spinner {
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+  }
+  ion-list {
+    span {
+      margin-top: 8px;
+    }
+  }
+}
+
+ion-icon {
+  font-size: 22px;
+}

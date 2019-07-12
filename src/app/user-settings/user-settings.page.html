@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'USER.SETTINGS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="user-settings">
+  <ion-list>
+    <ion-item-sliding (click)="userDetailsModal()">
+      <ion-item [detail]="true">
+        <ion-icon color="primary" slot="start" md="md-person"></ion-icon>
+        <ion-label>
+          {{ 'USER.USER_DETAILS' | translate }}
+        </ion-label>
+      </ion-item>
+    </ion-item-sliding>
+    <ion-item-sliding (click)="changePasswordModal()">
+      <ion-item [detail]="true">
+        <ion-icon color="primary" slot="start" ios="ios-lock" md="md-lock"></ion-icon>
+        <ion-label>
+          {{ 'USER.ACCOUNT' | translate }}
+        </ion-label>
+      </ion-item>
+    </ion-item-sliding>
+    <ion-item-sliding (click)="sendReminderModal()">
+      <ion-item [detail]="true">
+        <ion-icon color="primary" slot="start" ios="ios-alarm" md="md-alarm"></ion-icon>
+        <ion-label>
+          {{ 'MEMBER.REMINDERS' | translate }}
+        </ion-label>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

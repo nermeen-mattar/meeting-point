@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      {{ isTeamAdmin? ('MEMBER.MEMBERS' | translate) : ('MEMBER.MEMBERS_LIST' | translate) }}  ({{  filterData.length  }})
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="member-list">
+    <ion-item class="member-list__inner-header">
+      <ion-label class="member-list__inner-header__team">{{ 'TEAM.TEAM' | translate }}</ion-label>
+      <ion-select class="member-list__inner-header__select-team" [(ngModel)]="selectedTeamId" ok-text="ok" cancel-text="cancel" (ionChange)="updateMembers(true)">
+        <ion-select-option *ngFor="let team of userTeams" [value]="team.teamId">
+          {{ team.teamName }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-searchbar (ionInput)="applyFilter($event.target.value)" placeholder="{{ 'SEARCH' | translate }}" [(ngModel)]="filterString"></ion-searchbar>
+    <ion-list *ngIf="!displaySpinner" #list>
+      <ion-item-sliding class="member-list__item" *ngFor="let memberData of filterData; let i=index">
+        <ion-item [detail]="true" (click)="displayMemberDetailsModal(memberData)">
+          <span>
+            <ion-label [className]="(memberData.acceptInvitation && memberData.active)? 'member-list__active': 'member-list__deactive'" text-wrap>{{ memberData.member.fullName ? memberData.member.fullName : memberData.member.mail }} {{ memberData.active? '' : '(' + ('DISABLED' | translate) + ')' }} {{ !memberData.acceptInvitation?  '(' +('UNCONFIRMED' | translate) +')' : '' }}</ion-label>
+            <ion-badge class="member-list__member" color="success">{{ 'MEMBER.MEMBER' | translate }}</ion-badge>
+            <ion-badge [className]="memberData.isAdmin? 'member-list__visible member-list__admin' : 'member-list__hide member-list__admin'" color="dark">{{ 'ADMIN.ADMIN' | translate }}</ion-badge>
+            <ion-badge [className]="!memberData.acceptInvitation? 'member-list__visible member-list__unconfirmed' : 'member-list__hide member-list__unconfirmed'" color="medium">{{ 'UNCONFIRMED' | translate }}</ion-badge>
+          </span>
+        </ion-item>
+        <ion-item-options class="member-list__item__options" *ngIf="isTeamAdmin" side="end">
+          <ion-item-option class="member-list__item__options__option" *ngIf="!memberData.acceptInvitation" (click)="resedInvitationLink(memberData.id)" color="tertiary">
+            <ion-icon name="mail"></ion-icon>
+          </ion-item-option>
+          <ion-item-option class="member-list__item__options__option" *ngIf="memberData.acceptInvitation" (click)="changeMemberActivationStatus(memberData)" [color]="memberData.active? 'medium' : 'success'">
+            <ion-icon [name]="memberData.active? 'md-pause' : 'md-play'"></ion-icon>
+          </ion-item-option>
+          <ion-item-option class="member-list__item__options__option" (click)="deleteModel(memberData, i)" color="danger">
+            <ion-icon name="md-trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+      <ion-label *ngIf="filterData.length === 0" class="member-list__not-found">{{ 'MEMBER.TEAM_HAS_NO_MEMBERS' | translate }}</ion-label>
+    </ion-list>
+    <ion-spinner class="member-list__mp-page-spinner" name="crescent" color="primary" *ngIf="displaySpinner"></ion-spinner>
+    <ion-fab *ngIf="isTeamAdmin" vertical="bottom" horizontal="end" slot="fixed" (click)="openMemberAddModal()">
+      <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+</ion-content>

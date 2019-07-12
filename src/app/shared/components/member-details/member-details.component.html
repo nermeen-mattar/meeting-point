@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="closePopOver()">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{'MEMBER.MEMBER' | translate}} {{'DETAILS' | translate}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group>
+    <ion-item *ngIf="member.firstName || member.lastName">
+      <ion-label>
+        {{member.firstName}} {{member.lastName}}
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="member.mail">
+      <ion-label text-wrap>
+        {{member.mail}}
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="member.mobile">
+      <ion-label>
+        {{member.mobile}}
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="action == 'cancel'">
+      <ion-label text-wrap>
+        {{ 'EVENT.REASON_FOR_CANCELLATION' | translate }}: {{ cancellationReason }}
+      </ion-label>
+    </ion-item>
+  </ion-item-group>
+
+</ion-content>

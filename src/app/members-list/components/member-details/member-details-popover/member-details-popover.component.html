@@ -1,0 +1,14 @@
+<ion-content>
+  <ion-item (click)="editRoles()">
+    <ion-icon name="md-create"></ion-icon>
+    <ion-text>{{ 'TEAM.ROLES' | translate }}</ion-text>
+  </ion-item>
+  <ion-item (click)="changeMemberActivationStatus()">
+    <ion-icon [name]="memberDetails.active? 'md-pause' : 'md-play'"></ion-icon>
+    <ion-text>{{ (memberDetails.active? 'DEACTIVATE' : 'ACTIVE') | translate }}</ion-text>
+  </ion-item>
+  <ion-item (click)="deleteMemberFormTeam()">
+    <ion-icon name="md-trash"></ion-icon>
+    <ion-text>{{ 'TEAM.DELETE_FROM_TEAM' | translate }}</ion-text>
+  </ion-item>
+</ion-content>

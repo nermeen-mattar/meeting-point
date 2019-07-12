@@ -1,0 +1,56 @@
+@import "../../../../theme/variables.scss";
+
+.member-statistics-details {
+  &__container {
+    &__basic-info {
+      display: flex;
+      flex-direction: column;
+      &__all-participation, &__to, &__from, &__member, &__email,  {
+        color: $mp-color-font-dark-medium;
+        font-weight: 500;
+        margin-right: 8px;
+      }
+      &__to {
+        margin-right: 25px;
+      }
+      &__date-from, &__date-to, &__member-name, &__email-name {
+        color: $mp-color-font-medium;
+      }
+      p:last-child {
+        padding-bottom: 10px;
+      }
+    }
+    &__participation-status, &__event, &__date {
+      color: $mp-color-font-dark-medium;
+      font-weight: 500;
+    }
+    &__date {
+      text-align: center;
+    }
+    &__list {
+      &__number-of-participation {
+        color: $mp-color-font-dark-medium;
+        font-weight: 500;
+      }
+      &__event-name, &__event-date, &__event-start-end-time, &__event-min-max {
+        color: $mp-color-font-medium;
+      }
+      &__error {
+        color: $mp-color-error;
+      }
+      &__success {
+        color: $mp-color-success;
+      }
+      &__error, &__success {
+        position: relative;
+        top: 4px;
+        font-size: 16px;
+      }
+    }
+  }
+  &__mp-page-spinner {
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+  }
+}

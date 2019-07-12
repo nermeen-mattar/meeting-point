@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ ( editMode ? 'TEAM.EDIT_TEAM' : 'TEAM.CREATE_TEAM')  | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="manage-team">
+  <form [formGroup]="manageTeamForm" *ngIf="!displaySpinner" class="manage-team__form" novalidate>
+    <ion-item lines="none">
+      <ion-text slot="start">{{'TEAM.TEAM_NAME' | translate}}</ion-text>
+      <ion-col class="manage-team__field">
+        <ion-item>
+          <ion-input formControlName="teamName" required type="text" placeholder="Team name"></ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="manageTeamForm.controls['teamName'].errors && manageTeamForm.controls['teamName'].invalid && manageTeamForm.controls['teamName'].dirty">
+          <div class="manage-team__error" *ngIf="manageTeamForm.controls['teamName'].errors.required">
+            {{'TEAM.TEAM_NAME' | translate}} {{ 'FORM.IS_REQUIRED' | translate }}
+          </div>
+          <div class="manage-team__error" *ngIf="manageTeamForm.controls['teamName'].errors.minlength">
+            {{'TEAM.TEAM_NAME' | translate}} {{ ('FORM.MIN_LENGTH' | translate) | localizedTextModifier:'inject':manageTeamForm.get('teamName').errors.minlength.requiredLength}}
+          </div>
+        </ion-note>
+      </ion-col>
+    </ion-item>
+    <ion-note  *ngIf="editMode">
+      <h4 class="manage-team__form__title" padding>
+        {{ 'EVENT.CATEGORIES' | translate }} <span> ({{categoriesList?.length}})</span>
+      </h4>
+      <ion-list>
+        <ion-item *ngFor="let category of categoriesList">
+          <ion-label>{{ category.name }}</ion-label>
+          <ion-buttons slot="end">
+            <ion-button (click)="editCategory(category)" class="manage-team__form__edit-category">
+              <ion-icon name="md-create" color="primary"></ion-icon>
+            </ion-button>
+            <ion-button (click)="deleteCategory(category.id)">
+              <ion-icon name="md-trash" color="primary"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+        <ion-label class="manage-team__form__not-found" *ngIf="categoriesList?.length === 0">
+          {{'USER_MESSAGES.TEAM.CATEGORY.TEAM_DO_NOT_HAVE_CATEGORIES' | translate}}
+        </ion-label>
+      </ion-list>
+    </ion-note>
+    <span *ngIf="editMode">
+      <ion-item class="manage-team__toggle" lines="none">
+        <ion-text>{{'TEAM.MANAGE_TEAM.COMMENT_REQUIRED_FOR_CANCELLATIONS' | translate}}</ion-text>
+        <ion-toggle slot="end" formControlName="cancelWithReason"></ion-toggle>
+      </ion-item>
+    </span>
+    <ion-button [disabled]="manageTeamForm.invalid" class="manage-team__submit" (click)="manageFormSubmit()" expand="block" padding>
+      {{ (  editMode? 'FORM.SAVE' : 'FORM.ADD' )  | translate }}
+    </ion-button>
+    <ion-button class="manage-team__cancel" (click)="closeModal()" expand="block" color="light" padding> {{'CANCEL' | translate}} </ion-button>
+  </form>
+  <ion-spinner class="manage-team__mp-page-spinner" name="crescent" color="primary" *ngIf="displaySpinner"></ion-spinner>
+</ion-content>

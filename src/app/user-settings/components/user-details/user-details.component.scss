@@ -1,0 +1,13 @@
+.user-settings {
+  &__spinner {
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+  }
+  &__error {
+    font-size: 12px;
+  }
+  &__timezone {
+    min-width: 70%;
+  }
+}

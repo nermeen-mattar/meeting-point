@@ -1,0 +1,236 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      {{ "EVENT.EVENTS" | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="app-events" padding>
+  <ion-item>
+    <ion-label>{{ "TEAM.TEAM" | translate }}</ion-label>
+    <ion-select
+      *ngIf="userTeams"
+      class="app-events__dropdown"
+      [(ngModel)]="selectedTeamId"
+      (ionChange)="changeSelectedTeam()"
+    >
+      <ion-select-option *ngFor="let team of userTeams" [value]="team.teamId">
+        {{ team.teamName }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{ "EVENT.CATEGORY" | translate }}</ion-label>
+    <ion-select
+      *ngIf="categoriesList"
+      class="app-events__dropdown"
+      [(ngModel)]="selectedCategoryId"
+      (ionChange)="updateEvents()"
+    >
+      <ion-select-option
+        *ngFor="let category of categoriesList"
+        [value]="category.id"
+      >
+        {{ category.id === -1 ? (category.name | translate) : category.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-button
+    fill="outline"
+    class="app-events__top-action-btn"
+    *ngIf="isPastEvents"
+    (click)="displayFutureEvents()"
+    color="primary"
+  >
+    <ion-icon name="arrow-back"></ion-icon>
+    {{ "BACK" | translate }}
+  </ion-button>
+  <ion-button
+    class="app-events__top-action-btn"
+    fill="outline"
+    *ngIf="!isPastEvents"
+    (click)="displayPastEvents()"
+    color="primary"
+  >
+    <ion-icon name="timer"></ion-icon>
+    {{ "EVENT.HISTORY" | translate }}
+  </ion-button>
+
+  <ion-refresher
+    pullMin="70"
+    pullFactor="0.5"
+    (ionRefresh)="refreshEventsList($event)"
+  >
+  </ion-refresher>
+  <ion-list class="app-events__list" *ngIf="!displaySpinner" #list>
+    <ion-item *ngIf="events?.length === 50" class="activated" no-padding>
+      <ion-icon name="warning" slot="end"></ion-icon>
+      <ion-label text-wrap>
+        {{ "USER_MESSAGES.WARNING_LIMITED_EVENTS_VISIBLE" | translate }}
+      </ion-label>
+    </ion-item>
+    <ion-item-sliding
+      class="app-events__list__item"
+      *ngFor="let event of events"
+    >
+      <ion-item
+        [detail]="isTeamAdmin"
+        no-padding
+        (click)="displayEventDetailsModal(event.id)"
+      >
+        <ion-toggle
+          class="app-events__toggle app-events__list__item__toggle"
+          color="primary"
+          *ngIf="isTeamMember"
+          [ngClass]="[
+            isPastEvents ||
+            (event.myParticipation &&
+              event.myParticipation.action === 'cancel' &&
+              (event.maxCriticalValue || event.maxCriticalValue == 0) &&
+              event.numOfParticipations >= event.maxCriticalValue)
+              ? 'toggle_disabled'
+              : ''
+          ]"
+          color="primary"
+          #toggler
+          (click)="$event.stopPropagation()"
+          (ionChange)="toggleParticipationInEvent(event.id, toggler)"
+          [checked]="
+            event.myParticipation && event.myParticipation.action !== 'cancel'
+          "
+        >
+        </ion-toggle>
+        <ion-label>
+          <ion-text class="app-events__event-name">
+            {{ event.eventName }}
+          </ion-text>
+          <ion-note class="app-events__top-row">
+            <div>
+              <span
+                >{{
+                  dateAdapterService.getFormattedDate(
+                    event.startTime,
+                    userService.timezone
+                  )
+                }}
+                ({{
+                  dateAdapterService.getFormattedTime(
+                    event.startTime,
+                    userService.timezone
+                  )
+                }}
+                -
+                {{
+                  dateAdapterService.getFormattedTime(
+                    event.endTime,
+                    userService.timezone
+                  )
+                }})
+              </span>
+            </div>
+          </ion-note>
+          <ion-note class="app-events__row">
+            <div>
+              <span
+                >{{ "EVENT.PRESENT" | translate }}:
+                {{ event.numOfParticipations }}</span
+              >
+              <span
+                *ngIf="event.hasMinCriticalValue || event.hasMaxCriticalValue"
+              >
+                (</span
+              >
+              <span *ngIf="event.hasMinCriticalValue"
+                >{{ "EVENT.MIN" | translate }}:
+                {{ event.minCriticalValue }}</span
+              >
+              <span
+                *ngIf="event.hasMinCriticalValue && event.hasMaxCriticalValue"
+                >,
+              </span>
+              <span *ngIf="event.hasMaxCriticalValue"
+                >{{ "EVENT.MAX" | translate }}:
+                {{ event.maxCriticalValue }}</span
+              >
+              <span
+                *ngIf="event.hasMinCriticalValue || event.hasMaxCriticalValue"
+                >)</span
+              >
+            </div>
+          </ion-note>
+        </ion-label>
+        <ion-icon
+          name="close-circle"
+          color="danger"
+          class="app-events__icon"
+          *ngIf="
+            (event.hasMinCriticalValue &&
+              event.minCriticalValue > event.numOfParticipations) ||
+              (event.hasMaxCriticalValue &&
+                event.maxCriticalValue < event.numOfParticipations);
+            else success
+          "
+        >
+        </ion-icon>
+        <ng-template #success>
+          <ion-icon
+            slot="end"
+            name="checkmark-circle"
+            color="success"
+            class="app-events__icon"
+          ></ion-icon>
+        </ng-template>
+      </ion-item>
+      <ion-item-options
+        class="app-events__list__item__options"
+        side="end"
+        *ngIf="isTeamAdmin"
+      >
+        <ion-item-option
+          color="primary"
+          class="app-events__list__item__options__option"
+          (click)="editEvent(event.id)"
+        >
+          <ion-icon name="md-create"></ion-icon>
+        </ion-item-option>
+        <ion-item-option
+          color="tertiary"
+          class="app-events__list__item__options__option"
+          (click)="copyEvent(event.id)"
+        >
+          <ion-icon name="md-copy"></ion-icon>
+        </ion-item-option>
+        <ion-item-option
+          color="danger"
+          class="app-events__list__item__options__option"
+          (click)="displayConfirmDelete(event)"
+        >
+          <ion-icon name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    <ion-label *ngIf="events?.length === 0" class="app-events__not-found"
+      >{{ "EVENT.TEAM_HAS_NO_EVENTS" | translate }}
+    </ion-label>
+  </ion-list>
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    *ngIf="isTeamAdmin"
+    color="primary"
+    routerLink="/event-form/new"
+    routerDirection="forward"
+  >
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <div class="app-events__spinner" *ngIf="displaySpinner">
+    <ion-spinner name="lines" color="primary" name="crescent"></ion-spinner>
+  </div>
+</ion-content>

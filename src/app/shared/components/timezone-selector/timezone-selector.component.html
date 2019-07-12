@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ 'EVENT.SELECT_TIMEZONE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="timezone-selector">
+  <ion-searchbar
+    (ionChange)="onTimezoneSearch($event)">
+  </ion-searchbar>
+  <ion-virtual-scroll [items]="filteredTimezones | async">
+    <ion-item no-padding *virtualItem="let timezone">
+      <ion-text padding>{{timezone.name}}</ion-text>
+      <ion-radio slot="end" (click)="timeZoneSelect(timezone)" [checked]="selectedTimeZone?.id === timezone.id"></ion-radio>
+    </ion-item>
+  </ion-virtual-scroll>
+</ion-content>

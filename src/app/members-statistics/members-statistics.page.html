@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'MEMBER.MEMBERS_STATISTICS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="app-members-statistics" padding>
+  <ion-item>
+    <h3 class="app-members-statistics__header-title">
+      {{ 'MEMBER.MEMBERS_STATISTICS' | translate }}
+      <span *ngIf="teamsTheUserIsAdminOf"> ({{ filterData.length }})</span>
+    </h3>
+  </ion-item>
+  <span [formGroup]="dateRangeFormGroup">
+    <ion-item>
+      <ion-label>{{ 'FROM' | translate }}</ion-label>
+      <ion-datetime display-format="DD.MM.YYYY" [min]="selectMinDate" [max]="selectMaxDate" formControlName="dateFrom"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{ 'TO' | translate }}</ion-label>
+      <ion-datetime display-format="DD.MM.YYYY" formControlName="dateTo" [min]="selectMinDate" [max]="selectMaxDate"></ion-datetime>
+    </ion-item>
+  </span>
+  <ion-item>
+    <ion-label>{{ 'TEAM.TEAM' | translate }}</ion-label>
+    <ion-select class="app-members-statistics__select-team" ok-text="ok" cancel-text="cancel" (ionChange)="updateMembersStatistics()" [(ngModel)]="selectedTeamId">
+      <ion-select-option *ngFor="let team of teamsTheUserIsAdminOf" [value]="team.teamId">
+        {{ team.teamName }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{ 'EVENT.CATEGORY' | translate }}</ion-label>
+    <ion-select ok-text="ok" cancel-text="cancel" (ionChange)="filterByCategory($event.detail.value)">
+      <ion-select-option value="all">{{ 'ALL' | translate }}</ion-select-option>
+      <ion-select-option *ngFor="let category of categoriesList" [value]="category.id">
+        {{ category.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-searchbar (ionInput)="applyFilter($event.target.value)" [(ngModel)]="filterString"></ion-searchbar>
+  <ion-list *ngIf="!displaySpinner">
+    <ion-item class="app-members-statistics__list" *ngFor="let member of filterData; let i=index">
+      <ion-label>
+        <h3>{{ member.firstName }} {{ member.lastName }}</h3>
+        <h3>{{ member.email }}</h3>
+      </ion-label>
+      <span slot="end">
+        <ion-label>
+          <h3 (click)="openDetailsModal({actionType:'participate', memberId: member.teamMemberId})">
+            <ion-text class="app-members-statistics__list__participation" color="success">{{ 'EVENT.PARTICIPATIONS' | translate }} {{ member.participations }}</ion-text> 
+            <ion-icon class="app-members-statistics__list__icon" name="information-circle"></ion-icon>
+          </h3>
+          <h3 (click)="openDetailsModal({actionType:'cancel', memberId: member.teamMemberId})">
+            <ion-text class="app-members-statistics__list__text" color="danger">{{ 'EVENT.CANCELATIONS' | translate }}</ion-text><ion-text color="danger">{{ member.cancelations }}</ion-text>
+            <ion-icon class="app-members-statistics__list__icon" name="information-circle"></ion-icon>
+          </h3>
+        </ion-label>
+      </span>
+    </ion-item>
+    <ion-label *ngIf="filterData.length === 0" class="app-members-statistics__not-found" text-center text-wrap>{{ 'MEMBER.TEAM_HAS_NO_MEMBERS_STATISTICS' | translate }}</ion-label>
+  </ion-list>
+  <ion-spinner class="app-members-statistics__mp-page-spinner" name="crescent" color="primary" *ngIf="displaySpinner"></ion-spinner>
+</ion-content>

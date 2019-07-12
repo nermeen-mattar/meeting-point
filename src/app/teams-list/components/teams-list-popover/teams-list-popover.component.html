@@ -1,0 +1,18 @@
+<ion-content>
+  <ion-item *ngIf="navParams.data.hasAdminRole" (click)="editMyRoles()">
+    <ion-icon name="md-create"></ion-icon>
+    <ion-text>{{ 'TEAM.EDIT_MY_ROLES' | translate }}</ion-text>
+  </ion-item>
+  <ion-item *ngIf="navParams.data.hasAdminRole" (click)="editTeamModal()">
+    <ion-icon name="md-create"></ion-icon>
+    <ion-text>{{ 'TEAM.EDIT_TEAM' | translate }}</ion-text>
+  </ion-item>
+  <ion-item *ngIf="navParams.data.hasMemberRole" (click)="confirmModel(false)">
+    <img class="work_off" src="./../../../../assets/icon/work_off.svg" />
+    <ion-text>{{ 'TEAM.LEAVE_TEAM' | translate }}</ion-text>
+  </ion-item>
+  <ion-item *ngIf="navParams.data.hasAdminRole" (click)="confirmModel(true)">
+    <ion-icon name="md-trash"></ion-icon>
+    <ion-text>{{ 'USER_MESSAGES.TEAM.TEAM_CONFIRM_DELETING_HEADER' | translate }}</ion-text>
+  </ion-item>
+</ion-content>

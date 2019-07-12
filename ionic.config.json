@@ -1,0 +1,7 @@
+{
+  "name": "meeting-point",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

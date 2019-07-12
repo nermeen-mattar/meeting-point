@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'TEAM.TEAMS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-content class="team-list" *ngIf="!displaySpinner">
+    <ion-list *ngFor="let team of userTeams">
+      <ion-item>
+        <span>
+          <ion-label>{{ team.teamName }}</ion-label>
+          <ion-badge class="team-list__member" *ngIf="hasMemberRole(team.teamId)" color="success">{{ 'MEMBER.MEMBER' | translate }}</ion-badge>
+          <ion-badge class="team-list__admin" *ngIf="hasAdminRole(team.teamId)" color="dark">{{ 'ADMIN.ADMIN' | translate }}</ion-badge>
+        </span>
+        <ion-icon class="team-list__popover" name="md-more" slot="end" (click)="showTeamsListPopover($event, hasAdminRole(team.teamId), hasMemberRole(team.teamId), team)"></ion-icon>
+      </ion-item>
+    </ion-list>
+    <ion-label *ngIf="userTeams.length === 0" class="team-list__not-found">{{ 'TEAM.USER_HAS_NO_TEAM' | translate }}</ion-label>
+  </ion-content>
+  <ion-spinner class="team-list__mp-page-spinner" name="crescent" color="primary" *ngIf="displaySpinner"></ion-spinner>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="openManageTeamModal()">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

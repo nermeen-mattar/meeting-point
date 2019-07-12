@@ -1,0 +1,71 @@
+@import "./variables.scss";
+
+.mp-item-sliding-option {
+  width: 60px;
+  ion-icon {
+    font-size: 30px;
+  }
+}
+
+.mp-page-spinner {
+  margin: 20px auto;
+  max-width: fit-content;
+}
+
+.badge .alert-wrapper .alert-checkbox-group :first-of-type .alert-button-inner {
+  justify-content: center;
+  & .alert-checkbox-icon.sc-ion-alert-md {
+    left: 0px;
+    margin-right: 8px;
+  }
+  & .alert-checkbox-label {
+    background-color: $mp-color-success;
+    max-width: 70px;
+    padding: 2px 0;
+    border-radius: 4px;
+    text-align: center;
+  }
+}
+
+.badge .alert-wrapper .alert-checkbox-group :last-of-type .alert-button-inner {
+  justify-content: center;
+  & .alert-checkbox-icon.sc-ion-alert-md {
+    left: 0px;
+    margin-right: 8px;
+  }
+  & .alert-checkbox-label {
+    background-color: $mp-color-gray-shade-10;
+    max-width: 70px;
+    padding: 2px 0;
+    border-radius: 4px;
+    text-align: center;
+    color: $mp-color-gray-tint-10;
+  }
+}
+
+.terms-conditions {
+  padding: 60px 36px;
+  .modal-wrapper {
+    border-radius: 6px;
+    box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+  }
+}
+
+.notification-section {
+  text-align: left;
+
+  .data-notification {
+    display: flex;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    span {
+      display: block;
+      text-align: left;
+    }
+  }
+  ion-icon{
+    color: $primary-color-dark !important;
+  }
+}

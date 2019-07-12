@@ -1,0 +1,170 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      {{ (eventId ? isCopyEvent ? 'EVENT.COPY_EVENT' : 'EVENT.EDIT_EVENT' : 'EVENT.CREATE_EVENT') | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="app-event-form">
+    <div  (click)="navigateToEventsList(false)">
+      <ion-icon name="arrow-back" color="primary"></ion-icon>
+      {{'BACK'| translate}}
+    </div>
+    <form novalidate [formGroup]="eventGroup" *ngIf="eventGroup && !displaySpinner">
+      <ion-col>
+        <ion-item>
+          <ion-label class="app-event-form__bold">{{ 'EVENT.EVENT_NAME' | translate }}: </ion-label>
+          <ion-input formControlName="eventName" type="text" slot="end" text-right>
+          </ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="eventGroup.get('eventName').invalid && eventGroup.get('eventName').dirty"> {{
+          'EVENT.EVENT_NAME' | translate }} {{'FORM.IS_REQUIRED' | translate}}
+        </ion-note>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="app-event-form__bold">{{ 'EVENT.EVENT_DATE' | translate }}: </ion-label>
+          <ion-datetime [disabled]="!!eventGroup.getRawValue().recurring && this.isEditEvent && !this.isCopyEvent" (click)="onOpenDatePicker(eventGroup.get('date'))" (ionCancel)="onCancelDatePicker(eventGroup.get('date'))" formControlName="date" [min]="minYear"
+            [max]="maxYear" display-format="DD.MM.YYYY" [doneText]="'DONE' | translate" [cancelText]="'CANCEL' | translate"></ion-datetime>
+        </ion-item>
+        <ion-note color="danger" *ngIf="eventGroup.get('date').dirty">
+          <span *ngIf="eventGroup.get('date').invalid">
+            {{'EVENT.DATE' | translate}} {{ 'FORM.IS_REQUIRED' | translate }}
+          </span>
+          <span *ngIf="eventGroup.errors && eventGroup.errors.validateTimeInFuture && !eventGroup.errors.validateTimeInFuture.isToday">
+            {{'USER_MESSAGES.EVENT.EVENT_SHOULD_BE_IN_FUTURE' | translate}}
+          </span>
+        </ion-note>
+      </ion-col>
+      <!-- TODO: check if they Tobi wants a toggeler then it will be uncommented.
+         <ion-item>
+        <ion-label>{{ 'EVENT.RECURRING_EVENT' | translate }}? </ion-label>
+        <ion-toggle  formControlName="isRecurring" color="primary" color="primary">
+        </ion-toggle>
+      </ion-item> -->
+      <ion-col>
+        <!-- *ngIf="eventGroup.get('isRecurring').value" -->
+        <ion-item [disabled]="eventId && isEditEvent">
+          <ion-label class="app-event-form__bold">
+            {{ 'EVENT.PERIOD' | translate }}: </ion-label>
+          <ion-select formControlName="recurring">
+            <ion-select-option value="">{{ 'EVENT.SINGLE' | translate }}</ion-select-option>
+            <ion-select-option value="1w">{{ 'EVENT.WEEKLY' | translate }}</ion-select-option>
+            <ion-select-option value="2w">{{ 'EVENT.BI_WEEKLY' | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="eventGroup.get('recurring').value">
+          <ion-label class="app-event-form__bold">{{ 'EVENT.PERIOD_END' | translate }}: </ion-label>
+          <ion-datetime (click)="onOpenDatePicker(eventGroup.get('endDate'))" (ionCancel)="onCancelDatePicker(eventGroup.get('endDate'))" [min]="minYear" [max]="endDateLimit" formControlName="endDate" picker-format="DD.MM.YYYY"
+            [doneText]="'DONE' | translate" [cancelText]="'CANCEL' | translate" display-format="DD.MM.YYYY"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="app-event-form__bold">{{ 'EVENT.START_TIME' | translate }}: </ion-label>
+          <ion-input formControlName="startTime" type="time" slot="end" text-right>
+          </ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="eventGroup.get('startTime').invalid && eventGroup.get('startTime').dirty ">
+          {{'EVENT.START_TIME' | translate}} {{ 'FORM.IS_REQUIRED' | translate }} </ion-note>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="app-event-form__bold">{{ 'EVENT.END_TIME' | translate }}: </ion-label>
+          <ion-input formControlName="endTime" type="time" slot="end" text-right>
+          </ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="eventGroup.get('endTime').invalid && eventGroup.get('endTime').dirty">
+          {{'EVENT.END_TIME' | translate}} {{ 'FORM.IS_REQUIRED' | translate }} </ion-note>
+      </ion-col>
+      <ion-note color="danger" *ngIf="eventGroup.errors">
+        <span *ngIf="eventGroup.errors.validateSecondGreaterThanFirst === 'startTime'; else shouldBeInFuture">
+          {{'FORM.END_SHOULD_BE_AFTER_START' | translate}}
+        </span>
+        <ng-template #shouldBeInFuture>
+          <span *ngIf="eventGroup.errors.validateTimeInFuture && eventGroup.errors.validateTimeInFuture.isToday">
+            {{'USER_MESSAGES.EVENT.EVENT_SHOULD_BE_IN_FUTURE' | translate}}
+          </span>
+        </ng-template>
+      </ion-note>
+      <ion-item (click)="openTimezoneTypeaheadModal()">
+        <ion-label>
+          {{'USER.TIMEZONE' | translate}}:
+        </ion-label>
+        <ion-label class="app-event-form__timezone" text-wrap text-right>
+          {{eventGroup.get('timezone').value.name}}
+        </ion-label>
+      </ion-item>
+      <ion-col>
+        <ion-item>
+          <ion-label class="app-event-form__bold">{{'EVENT.LOCATION'| translate}}: </ion-label>
+          <ion-input formControlName="location" type="text" slot="end" text-right>
+          </ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="eventGroup.get('location').invalid && eventGroup.get('location').dirty">
+          {{'EVENT.LOCATION'| translate}} {{'FORM.IS_REQUIRED' | translate }}</ion-note>
+      </ion-col>
+      <ion-item [disabled]="eventId && !isCopyEvent">
+        <ion-label class="app-event-form__bold">
+          {{'MEMBER.BY_DEFAULT_MEMBERS_ARE' | translate}}: </ion-label>
+        <ion-select formControlName="type" (ionChange)="onEventTypeChange()">
+          <ion-select-option value="0">{{'EVENT.JOINING'| translate}}</ion-select-option>
+          <ion-select-option value="1">{{'EVENT.NOT_JOINING'| translate}} </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-col>
+        <ion-item>
+          <ion-label class="app-event-form__bold"> {{'EVENT.MIN_PARTICIPANTS'| translate}}: </ion-label>
+          <ion-input formControlName="min" type="number" slot="end" text-right>
+          </ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="eventGroup.get('min').invalid">
+          {{'EVENT.MIN_PARTICIPANTS'| translate}} {{ 'FORM.SHOULD_BE_POSITIVE' | translate }} </ion-note>
+      </ion-col>
+      <ion-col>
+        <ion-item *ngIf="!eventGroup.get('max').disabled">
+          <ion-label class="app-event-form__bold"> {{'EVENT.MAX_PARTICIPANTS'| translate}}: </ion-label>
+          <ion-input formControlName="max" type="number" slot="end" text-right>
+          </ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="eventGroup.get('max').invalid">
+          {{'EVENT.MAX_PARTICIPANTS'| translate}} {{ 'FORM.SHOULD_BE_POSITIVE' | translate }} </ion-note>
+      </ion-col>
+      <ion-note color="danger" *ngIf="eventGroup.errors && eventGroup.errors.validateSecondGreaterThanFirst === 'min'">
+        {{'FORM.MAX_SHOULD_BE_MORE_THAN_MIN' | translate}}
+      </ion-note>
+      <ion-item>
+        <ion-label>
+          {{ 'EVENT.CATEGORY' | translate }}: </ion-label>
+        <ion-select formControlName="category" [(ngModel)]="selectedCategory">
+          <ion-select-option *ngFor="let category of categoriesList" [value]="category.id">{{category.name}}</ion-select-option>
+          <ion-select-option value="none">{{ 'NONE' | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="none" *ngIf="eventGroup.enabled">
+        <ion-label slot="start" (click)="displayAddCategoryAlert()" class="app-event-form__link app-event-form__bold">{{
+          'EVENT.ADD_NEW_CATEGORY' | translate }}</ion-label>
+      </ion-item>
+      <ion-col>
+        <ion-item>
+          <ion-label> {{'EVENT.COMMENT'| translate}}: </ion-label>
+          <ion-input formControlName="comment" type="text">
+          </ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="eventGroup.get('comment').invalid"> {{'EVENT.COMMENT'| translate}} {{
+          'FORM.IS_REQUIRED' | translate }} </ion-note>
+      </ion-col>
+    </form>
+    <ion-spinner *ngIf="displaySpinner" name="lines" color="primary" class="app-event-form__spinner"></ion-spinner>
+  </div>
+  <ion-fab *ngIf="eventGroup" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [disabled]="eventGroup.disabled" color="primary" (click)="save()">
+      <ion-icon name="save"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

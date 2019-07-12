@@ -1,0 +1,17 @@
+@import "./../../theme/variables.scss";
+.app-event-form {
+  &__spinner {
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+  }
+  &__link {
+    color: $mp-color-base-bright-shade-3;
+  }
+  &__timezone {
+    min-width: 70%;
+  }
+  &__bold {
+    font-weight: 500;
+  }
+}

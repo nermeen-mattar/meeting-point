@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'MEMBER.REMINDERS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="user-setting">
+  <div *ngIf="!displaySpinner" novalidate>
+    <ion-label>{{ 'MEMBER.ALLOW_MAIL_REMINDERS_FOR' | translate }}</ion-label>
+    <ion-item lines="none" *ngFor="let team of teamsTheUserIsMemberOf; let i=index">
+      <ion-toggle slot="start" #teamsToggle (click)="setSendReminder(!$event.target.checked, team.teamId)" [checked]="false"></ion-toggle>
+      <ion-text>{{ team.teamName }}</ion-text>
+    </ion-item>
+    <ion-item lines="none" padding-top>
+      <ion-item lines="none" no-padding *ngIf="teamsTheUserIsMemberOf.length > 0">
+        <ion-toggle slot="start" [(ngModel)]="allTeamsSelected" (click)="selectAll(!$event.target.checked)" [checked]="false"></ion-toggle>
+        <ion-text>{{'FORM.SELECT_ALL' | translate}}</ion-text>
+      </ion-item>
+    </ion-item>
+    <ion-button [disabled]="!(sendReminderData.length > 0 && teamsTheUserIsMemberOf.length > 0)" expand="block" padding (click)="notification()"> {{'FORM.SAVE' | translate}} </ion-button>
+  </div>
+  <ion-spinner class="user-setting__mp-page-spinner" name="crescent"color="warning" *ngIf="displaySpinner"></ion-spinner>
+</ion-content>

@@ -1,0 +1,25 @@
+@import "./../../../../theme/variables.scss";
+
+.manage-team {
+  &__toggle {
+    margin-top: 20px;
+  }
+  &__mp-page-spinner {
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+  }
+  &__field {
+    height: 84px;
+  }
+  &__error {
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  &__form {
+    &__not-found {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

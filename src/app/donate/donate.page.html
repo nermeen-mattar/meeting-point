@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Donate</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="app-donate">
+    <div class="taglinewrap">
+      <div class="container">
+        <div class="section-title">
+          <h3>{{'DONATE.TITLE' | translate}}</h3>
+          <p>{{'DONATE.TEXT' | translate}}</p>
+        </div>
+        <a href="https://meeting-point/donate" target="_blank">
+          <div class="app-donate__section__content--icon-wrap">
+            <ion-button type="submit" fill="clear">
+              <ion-icon color="primary" name="cafe" class="app-donate--icon-wrap__icon app-donate--icon-wrap__icon--donate"></ion-icon>
+            </ion-button>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</ion-content>

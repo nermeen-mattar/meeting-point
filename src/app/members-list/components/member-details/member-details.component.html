@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'MEMBER.MEMBER' | translate }} {{ 'DETAILS' | translate }} {{'USER.SETTINGS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="member-details">
+  <div *ngIf="!displaySpinner">
+    <ion-item no-padding>
+      <ion-text slot="end">
+        {{ 'TEAM.TEAM' | translate }} : {{ memberDetails.team.name }}
+      </ion-text>
+    </ion-item>
+
+    <ion-item-group class="member-details__main-details" no-padding>
+      <ion-item no-padding>
+        <h3>
+          {{ memberDetails.member.firstName? memberDetails.member.firstName : memberDetails.member.mail}} {{ memberDetails.member.lastName? memberDetails.member.lastName : '' }}
+        </h3>
+        <span slot="end" class="member-details__main-details__popover-icon" (click)="showMemberDetailsPopover($event)">
+          <ion-icon *ngIf="isTeamAdmin" name="settings"></ion-icon>
+        </span>
+      </ion-item>
+
+      <ion-item no-padding>
+        <span>
+          <ion-icon name="contacts" class="member-details__main-details__roles"></ion-icon>
+          <ion-text>
+            {{ 'TEAM.ROLES' | translate }}:
+          </ion-text>
+        </span>
+        <ion-label padding-start>
+          <ion-badge class="member-details__main-details__member" color="success">{{ 'MEMBER.MEMBER' | translate }}</ion-badge>
+          <ion-badge [className]="memberDetails.isAdmin? 'member-details__main-details__visible' : 'member-details__main-details__hide'">{{ 'ADMIN.ADMIN' | translate }}</ion-badge>
+        </ion-label>
+      </ion-item>
+
+      <ion-item no-padding>
+        <span>
+          <ion-icon class="member-details__main-details__phone" name="call"></ion-icon>
+          <ion-text>
+            {{ 'PHONE' | translate }}:
+          </ion-text>
+        </span>
+        <ion-label padding-start>
+          <ion-text>
+            {{ memberDetails.member.mobile }}
+          </ion-text>
+        </ion-label>
+      </ion-item>
+
+      <ion-item no-padding>
+        <span>
+          <ion-icon class="member-details__main-details__mail" name="mail"></ion-icon>
+          <ion-text>
+            {{ 'USER.MAIL' | translate }}:
+          </ion-text>
+        </span>
+        <ion-label padding-start>
+          <ion-text class="member-details__main-details__user-mail" text-wrap (click)="copyEmail(memberDetails.member.mail)">
+            {{ memberDetails.member.mail }}
+          </ion-text>
+        </ion-label>
+      </ion-item>
+    </ion-item-group>
+  </div>
+  <ion-spinner class="member-details__mp-page-spinner" name="crescent"color="warning" *ngIf="displaySpinner"></ion-spinner>
+</ion-content>

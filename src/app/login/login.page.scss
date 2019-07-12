@@ -1,0 +1,25 @@
+@import "./../../theme/variables.scss";
+.login-page {
+  &__submit-btn {
+    margin-top: 20px;
+  }
+  &__link {
+    color: $mp-color-base-bright-shade-3;
+    min-width: 100%;
+    text-align: center;
+  }
+  &__or-separator {
+    margin: 20px 0 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &__sep {
+      flex: 1;
+      height: 2px;
+      background: $divider-color;
+    }
+    &__text {
+      padding: 0 20px;
+    }
+  }
+}

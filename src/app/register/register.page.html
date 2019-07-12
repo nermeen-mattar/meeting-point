@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{"REGISTER.REGISTER" | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="register-page">
+  <ion-content *ngIf="!displayMessageCard">
+    <form *ngIf="currentStep === 1" novalidate [formGroup]="registerFirstStepForm">
+      <ion-list>
+        <ion-col>
+          <ion-item>
+            <ion-input [placeholder]="'TEAM.TEAM_NAME' | translate" formControlName="teamName"></ion-input>
+          </ion-item>
+          <ion-note padding class="register-page__field__error" color="danger" *ngIf="registerFirstStepForm.get('teamName').invalid && registerFirstStepForm.get('teamName').dirty">
+            <span *ngIf="registerFirstStepForm.get('teamName').errors.required;">
+              {{'TEAM.TEAM_NAME' | translate}} {{ 'FORM.IS_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="registerFirstStepForm.get('teamName').errors.minlength">
+              {{'TEAM.TEAM_NAME' | translate}} {{ ('FORM.MIN_LENGTH' | translate) |
+              localizedTextModifier:'inject':registerFirstStepForm.get('teamName').errors.minlength.requiredLength}}
+            </span>
+          </ion-note>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-input inputmode="email" formControlName="email" type="email" [placeholder]="'USER.EMAIL' | translate"></ion-input>
+          </ion-item>
+          <ion-note padding class="register-page__field__error" color="danger" *ngIf="registerFirstStepForm.get('email').invalid && registerFirstStepForm.get('email').dirty">
+            <span *ngIf="registerFirstStepForm.get('email').errors.required">
+              {{'USER.EMAIL' | translate}} {{ 'FORM.IS_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="registerFirstStepForm.get('email').errors.email">
+              {{'FORM.ENTER_VALID_EMAIL' | translate}}
+            </span>
+          </ion-note>
+        </ion-col>
+        <ion-item lines="none">
+          <ion-button slot="end" id="nextBtn" size="default" fill="outline" (click)="checkUserTypeAndDisplayNextStep()" type="submit"
+            [disabled]="registerFirstStepForm.invalid" color="primary">
+            {{ 'NEXT' | translate }} <ion-icon name="arrow-forward"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </form>
+
+    <form [formGroup]="registerSecondStepForm" *ngIf="currentStep === 2" novalidate (ngSubmit)="(!registerFirstStepForm.invalid && !registerSecondStepForm.invalid) && register(registerFirstStepForm.value, registerSecondStepForm.value);">
+      <ion-button id="backBtn" fill="outline" size="default" type="button" (click)="currentStep = currentStep - 1"
+        color="primary">
+        <ion-icon name="arrow-back"></ion-icon>
+        {{'BACK' | translate }}
+      </ion-button>
+      <ion-col>
+        <ion-item *ngIf="userType === registerUserTypes.new">
+          <ion-input formControlName="firstName" [placeholder]="'USER.FIRST_NAME' | translate"></ion-input>
+        </ion-item>
+        <ion-note padding class="register-page__field__error" color="danger" *ngIf="registerSecondStepForm.get('firstName').invalid && registerSecondStepForm.get('firstName').dirty">
+          {{ 'USER.FIRST_NAME' | translate}} {{'FORM.IS_REQUIRED' | translate}}
+        </ion-note>
+      </ion-col>
+      <ion-col>
+        <ion-item *ngIf="userType === registerUserTypes.new">
+          <ion-input formControlName="lastName" [placeholder]="'USER.LAST_NAME' | translate"></ion-input>
+        </ion-item>
+        <ion-note padding class="register-page__field__error" color="danger" *ngIf="registerSecondStepForm.get('lastName').invalid && registerSecondStepForm.get('lastName').dirty">
+          {{ 'USER.LAST_NAME' | translate
+          }} {{'FORM.IS_REQUIRED' | translate}}
+        </ion-note>
+      </ion-col>
+
+      <ion-item lines="none" *ngIf="!userType === registerUserTypes.new">
+        <ion-label text-wrap>
+          {{'REGISTER.MEMBER_ALREADY_EXIST' | translate}}
+        </ion-label>
+      </ion-item>
+      <mp-new-password [passwordControl]="registerSecondStepForm.get('password')"></mp-new-password>
+      <ion-col *ngIf="userType === registerUserTypes.new">
+        <div class="register-page__confirm-terms">
+          <ion-checkbox class="register-page__confirm-terms__checkbox" slot="start" color="primary" formControlName="confirmTerms"></ion-checkbox>
+          <ion-label>
+            <a class="register-page__link" (click)="openTermsAndConditionsModal()"> {{'I_CONFIRM_THE_TERMS_CONDITIONS' | translate }}</a>
+          </ion-label>
+        </div>
+        <ion-note padding class="register-page__field__error" color="danger" *ngIf="registerSecondStepForm.get('confirmTerms').dirty && !registerSecondStepForm.get('confirmTerms').value">
+          {{ 'HAVE_TO_CONFIRM_TERMS_CONDITIONS' | translate }}
+        </ion-note>
+      </ion-col>
+      <!-- <ion-item lines="none"> TODO: it will be used later
+        <ion-label text-wrap>{{'MEMBER.ALSO_MEMBER' | translate }}</ion-label>
+        <ion-checkbox slot="start" color="primary" formControlName="isTeamMember"></ion-checkbox>
+      </ion-item> -->
+      <ion-button id="registerBtn" expand="block" fill="outline" type="submit" [disabled]="registerFirstStepForm.invalid || registerSecondStepForm.invalid"
+        color="primary">
+        {{displaySpinner? '' : "REGISTER.REGISTER" | translate}}
+        <ion-spinner name="dots" *ngIf="displaySpinner"></ion-spinner>
+      </ion-button>
+    </form>
+  </ion-content>
+
+  <ion-content *ngIf="displayMessageCard">
+    <ion-item lines="none" *ngIf="userType === registerUserTypes.new || userType === registerUserTypes.active">
+      <ion-label text-wrap>
+        {{'USER_MESSAGES.REGISTER.TEAM_CREATING_SUCCESS' | translate }}.
+        <span *ngIf="userType === registerUserTypes.new">
+          {{ 'USER_MESSAGES.REGISTER.PLEASE_ACTIVATE' | translate }}
+        </span>
+      </ion-label>
+    </ion-item>
+    <ion-col *ngIf="userType === registerUserTypes.pending">
+      <ion-item lines="none">
+        <ion-label text-wrap>
+          {{ 'REGISTER.PENDING_CONFIRMATION_EMAIL' | translate | localizedTextModifier:'inject':
+          registerFirstStepForm.controls.email.value}}
+        </ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-button *ngIf="userType === registerUserTypes.new || userType === registerUserTypes.pending" expand="block"
+      fill="outline" (click)="resendConfirmationEmail()">
+      {{displaySpinner? '' : 'REGISTER.SEND_MAIL_AGAIN'| translate}}
+      <ion-spinner name="dots" *ngIf="displaySpinner"></ion-spinner>
+    </ion-button>
+    <ion-button #okBtn expand="block" color="primary" [disabled]="registerFirstStepForm.invalid || registerSecondStepForm.invalid"
+      routerLink="/login">
+      {{'OK' | translate }}</ion-button>
+  </ion-content>
+</ion-content>

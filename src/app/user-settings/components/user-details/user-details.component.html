@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'USER.USER_DETAILS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="user-settings">
+  <div *ngIf="!displaySpinner">
+    <form [formGroup]="memberBasicSettingsGroup" novalidate (ngSubmit)="saveMemberBasicInfoSettings()">
+      <ion-item lines="none" no-padding>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">{{'USER.FIRST_NAME' | translate}}</ion-label>
+            <ion-input formControlName="firstName" required type="text"
+              placeholder="{{'USER.FIRST_NAME' | translate }}"></ion-input>
+          </ion-item>
+          <ion-note class="user-settings__error" color="danger"
+            *ngIf="memberBasicSettingsGroup.get('firstName').invalid" padding>
+            {{'USER.FIRST_NAME' | translate}} {{ 'FORM.IS_REQUIRED' | translate }}
+          </ion-note>
+        </ion-col>
+      </ion-item>
+      <ion-item lines="none" no-padding>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">{{'USER.LAST_NAME' | translate}}</ion-label>
+            <ion-input formControlName="lastName" required type="text" placeholder="{{'USER.LAST_NAME' | translate}}">
+            </ion-input>
+          </ion-item>
+          <ion-note class="user-settings__error" color="danger" *ngIf="memberBasicSettingsGroup.get('lastName').invalid"
+            padding>
+            {{'USER.LAST_NAME' | translate}} {{ 'FORM.IS_REQUIRED' | translate }}
+          </ion-note>
+        </ion-col>
+      </ion-item>
+      <ion-item lines="none" no-padding>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">{{'USER.MOBILE_NUMBER' | translate}}</ion-label>
+            <ion-input formControlName="mobile" type="text" placeholder="{{'USER.MOBILE_NUMBER' | translate}}">
+            </ion-input>
+          </ion-item>
+          <ion-note class="user-settings__error" color="danger" *ngIf="memberBasicSettingsGroup.get('mobile').invalid"
+            padding>
+            {{'FORM.ENTER_VALID_NUMBER' | translate}}
+          </ion-note>
+        </ion-col>
+      </ion-item>
+      <ion-item (click)="openTimezoneTypeaheadModal()">
+        <ion-label>
+          {{'USER.TIMEZONE' | translate}}:
+        </ion-label>
+        <ion-label class="user-settings__timezone" text-wrap text-right>
+          {{memberBasicSettingsGroup.get('timezone').value.name}}
+        </ion-label>
+      </ion-item>
+      <ion-button [disabled]="memberBasicSettingsGroup.invalid" type="submit" slot="end" expand="block" padding> {{'FORM.SAVE' | translate}}</ion-button>
+    </form>
+  </div>
+  <ion-spinner class="user-settings__spinner" name="crescent" color="primary" *ngIf="displaySpinner"></ion-spinner>
+</ion-content>

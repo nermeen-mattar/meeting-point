@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{"LOGIN.LOGIN" | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="login-page">
+  <form [formGroup]="loginForm" (ngSubmit)="login(loginForm)" novalidate>
+    <ion-item>
+      <ion-input inputmode="email" formControlName="userEmail" type="email" [placeholder]="'USER.ENTER_YOUR_EMAIL' | translate"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="loginForm.get('userEmail').invalid && loginForm.get('userEmail').dirty">
+      <span *ngIf="loginForm.get('userEmail').errors.required">
+        {{ 'USER.EMAIL' | translate }} {{'FORM.IS_REQUIRED' | translate}}
+      </span>
+      <span *ngIf="loginForm.get('userEmail').getError('email')">
+        {{ 'FORM.ENTER_VALID_EMAIL' | translate }}
+      </span>
+    </ion-note>
+    <mp-new-password [passwordControl]="loginForm.get('userPassword')"></mp-new-password>
+    <ion-button type="submit" [disabled]="loginForm.invalid" class="login-page__submit-btn" expand="block" color="primary"
+      fill="outline">
+      {{displaySpinner? '' : "LOGIN.LOGIN" | translate}}
+      <ion-spinner name="dots" *ngIf="displaySpinner"></ion-spinner>
+    </ion-button>
+
+    <div class="login-page__or-separator">
+      <div class="login-page__or-separator__sep"></div>
+      <div class="login-page__or-separator__text">OR</div>
+      <div class="login-page__or-separator__sep"></div>
+    </div>
+
+    <ion-button
+      type="button"
+      class="login-page__submit-btn"
+      expand="block"
+      color="warning"
+      fill="outline"
+      routerLink="/register">
+        {{"REGISTER.REGISTER" | translate}}
+    </ion-button>
+    <ion-item lines="none">
+      <ion-label slot="start" routerLink="/forget-password" class="login-page__link">{{"LOGIN.FORGOT_PASSWORD" |
+        translate}} </ion-label>
+    </ion-item>
+  </form>
+</ion-content>

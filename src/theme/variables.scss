@@ -1,0 +1,210 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
+
+/** Ionic CSS Variables **/
+:root {
+  /** primary **/
+  --ion-color-primary: #ff9800;
+  --ion-color-primary-rgb: 255, 152, 0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #e08600;
+  --ion-color-primary-tint: #ffa21a;
+
+  /** secondary **/
+  --ion-color-secondary: #0cd1e8;
+  --ion-color-secondary-rgb: 12, 209, 232;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #0bb8cc;
+  --ion-color-secondary-tint: #24d6ea;
+
+  /** tertiary **/
+  --ion-color-tertiary: #7044ff;
+  --ion-color-tertiary-rgb: 112, 68, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #633ce0;
+  --ion-color-tertiary-tint: #7e57ff;
+
+  /** success **/
+  --ion-color-success: #10dc60;
+  --ion-color-success-rgb: 16, 220, 96;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #0ec254;
+  --ion-color-success-tint: #28e070;
+
+  /** warning **/
+  --ion-color-warning: #ffce00;
+  --ion-color-warning-rgb: 255, 206, 0;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #e0b500;
+  --ion-color-warning-tint: #ffd31a;
+
+  /** danger **/
+  --ion-color-danger: #f04141;
+  --ion-color-danger-rgb: 245, 61, 61;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #d33939;
+  --ion-color-danger-tint: #f25454;
+
+  /** dark **/
+  --ion-color-dark: #222428;
+  --ion-color-dark-rgb: 34, 34, 34;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1e2023;
+  --ion-color-dark-tint: #383a3e;
+
+  /** medium **/
+  --ion-color-medium: #989aa2;
+  --ion-color-medium-rgb: 152, 154, 162;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #86888f;
+  --ion-color-medium-tint: #a2a4ab;
+
+  /** light **/
+  --ion-color-light: #f4f5f8;
+  --ion-color-light-rgb: 244, 244, 244;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d7d8da;
+  --ion-color-light-tint: #f5f6f9;
+}
+
+////////////////////////////////////////////////////////////
+// Fonts ( Family & Size )
+////////////////////////////////////////////////////////////
+// Type
+$mp-font-face-base:'Roboto',
+'Arial',
+sans-serif;
+// Colors
+$primary-color-dark : #F57C00;
+$primary-color : #FF9800;
+$primary-color-light : #FFE0B2;
+$primary-color-text : #212121;
+$accent-color : #FFEB3B;
+$primary-text-color : #212121;
+$secondary-text-color: #757575;
+$divider-color : #BDBDBD;
+$dark-brown : #795548;
+$facebook: #3b5998;
+$footer-primary-color: #323232;
+$public-black: #333333;
+// Weight
+$mp-font-weight-1: 100;
+$mp-font-weight-2: 200;
+$mp-font-weight-3: 300;
+$mp-font-weight-4: 400;
+$mp-font-weight-5: 500;
+$mp-font-weight-6: 600;
+$mp-font-weight-7: 700;
+$mp-font-weight-8: 800;
+$mp-font-weight-9: 900;
+//  Font Size
+$mp-font-size-base: 10px;
+$mp-font-size-body: 1.3rem;
+// Heading Size
+$mp-font-size-h1: 3.5rem;
+$mp-font-size-h2: 2.5rem;
+$mp-font-size-h3: 1.5rem;
+$mp-font-size-h4: 1.2rem;
+$mp-font-size-h5: 0.9rem;
+$mp-font-size-h6: 0.7rem;
+////////////////////////////////////////////////////////////
+// Color ( Base, Font, Border, Alert )
+////////////////////////////////////////////////////////////
+// 20 Shades of Gray
+// Base Gray #f6f6f6
+// shade-0 = tint-0
+$mp-color-gray-shade-0: #f6f6f6;
+$mp-color-gray-shade-1: #dddddd;
+$mp-color-gray-shade-2: #c4c4c4;
+$mp-color-gray-shade-3: #acacac;
+$mp-color-gray-shade-4: #939393;
+$mp-color-gray-shade-5: #7b7b7b;
+$mp-color-gray-shade-6: #626262;
+$mp-color-gray-shade-7: #494949;
+$mp-color-gray-shade-8: #313131;
+$mp-color-gray-shade-9: #181818;
+$mp-color-gray-shade-10: #000000;
+$mp-color-gray-tint-0: #f6f6f6;
+$mp-color-gray-tint-1: #f6f6f6;
+$mp-color-gray-tint-2: #f7f7f7;
+$mp-color-gray-tint-3: #f8f8f8;
+$mp-color-gray-tint-4: #f9f9f9;
+$mp-color-gray-tint-5: #fafafa;
+$mp-color-gray-tint-6: #fbfbfb;
+$mp-color-gray-tint-7: #fcfcfc;
+$mp-color-gray-tint-8: #fdfdfd;
+$mp-color-gray-tint-9: #fefefe;
+$mp-color-gray-tint-10: #ffffff;
+// Base
+$mp-color-base-bright: #2fabdf;
+$mp-color-base-dark: #323232;
+$mp-color-base-bright-shade-0: #2fabdf;
+$mp-color-base-bright-shade-1: #1f99cd;
+$mp-color-base-bright-shade-2: #1d8ebe;
+$mp-color-base-bright-shade-3: #166d92;
+$mp-color-base-bright-shade-4: #146283;
+$mp-color-base-bright-shade-5: #125774;
+$mp-color-base-bright-shade-6: #104c66;
+$mp-color-base-bright-shade-7: #0d4157;
+$mp-color-base-bright-shade-8: #0b3648;
+$mp-color-base-bright-shade-9: #092b39;
+$mp-color-base-bright-shade-10: #07202b;
+$mp-color-base-bright-tint-0: #2fabdf;
+$mp-color-base-bright-tint-1: #4cb7e4;
+$mp-color-base-bright-tint-2: #6ac3e8;
+$mp-color-base-bright-tint-3: #87cfed;
+$mp-color-base-bright-tint-4: #96d5ef;
+$mp-color-base-bright-tint-5: #a5dbf1;
+$mp-color-base-bright-tint-6: #b3e0f3;
+$mp-color-base-bright-tint-7: #d1ecf8;
+$mp-color-base-bright-tint-8: #e0f2fa;
+$mp-color-base-bright-tint-9: #eef8fc;
+$mp-color-base-bright-tint-10: #fdfeff;
+// Background
+$mp-color-background-light: #f6f6f6;
+$mp-color-background-light-invert: #fff;
+// Font
+$mp-color-font-dark: #08090b;
+$mp-color-font-dark-medium: #16191f;
+$mp-color-font-medium: #242933;
+$mp-color-font-medium-light: #a6afc0;
+$mp-color-font-light: #e2e5eb;
+$mp-color-font-disabled: #eceef2;
+// Border
+$mp-color-border-dark: #242933;
+$mp-color-border-medium: #e2e5eb;
+$mp-color-border-light: #eceef2;
+$mp-color-border-base: $mp-color-border-medium;
+// Fill
+$mp-color-fill: #fff;
+$mp-color-focus-border: #eceef2;
+// Alerts
+$mp-color-error: #f44336;
+$mp-color-warning: #e2e735;
+$mp-color-valid: #b4fccd;
+$mp-color-invalid: #ef7193;
+$mp-color-success:#32d86c;
+$mp-color-failure: $mp-color-error;
+// z-index levels
+$mp-z-index-level-1: 100;
+$mp-z-index-level-2: 200;
+$mp-z-index-level-3: 300;
+$mp-z-index-level-4: 400;
+$mp-z-index-level-5: 500;
+$mp-z-index-level-6: 600;
+$mp-z-index-level-7: 700;
+$mp-z-index-level-8: 800;
+$mp-z-index-level-9: 900;
+$mp-z-index-level-10: 1000;
+// Styles added by nermeen (please adjust these in above sections)
+
+$secondary-font-size: 0.8571rem;

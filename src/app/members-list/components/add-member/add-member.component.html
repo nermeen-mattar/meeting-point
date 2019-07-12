@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ "FORM.ADD" | translate }} {{ "MEMBER.MEMBER" | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="add-member">
+  <form
+    [formGroup]="addEmailForm"
+    *ngIf="!displaySpinner"
+    class="add-member__form"
+    novalidate
+  >
+    <ion-list formArrayName="emails">
+      <ion-item
+        *ngFor="
+          let email of addEmailForm.get('emails')['controls'];
+          let i = index
+        "
+        formGroupName="{{ i }}"
+      >
+        <ion-input
+          formControlName="email"
+          required
+          type="email"
+          placeholder="Email"
+        ></ion-input>
+        <ion-button
+          *ngIf="
+            i !== 0 ||
+            (i == 0 && addEmailForm.get('emails')['controls'].length > 1)
+          "
+          class="add-member__form__delete first-one"
+          (click)="removeEmailField(i)"
+          ion-button
+          size="small"
+          color="danger"
+          round
+          ><ion-icon ios="ios-close" md="md-close"></ion-icon
+        ></ion-button>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-button
+          [disabled]="isValidForm()"
+          class="add-member__form__add"
+          (click)="addEmailField()"
+          ion-button
+          color="success"
+          size="small"
+          round
+          slot="end"
+          ><ion-icon ios="ios-add" md="md-add"></ion-icon
+        ></ion-button>
+      </ion-item>
+    </ion-list>
+  </form>
+  <ion-spinner
+    class="add-member__mp-page-spinner"
+    name="crescent"
+    color="warning"
+    *ngIf="displaySpinner"
+  ></ion-spinner>
+  <ion-button
+    [disabled]="isValidForm() || displaySpinner"
+    class="invite"
+    (click)="addMembersToTeam()"
+    expand="block"
+    padding
+  >
+    {{ "MEMBER.INVITE" | translate }}
+  </ion-button>
+  <!-- <ion-button color="danger" (click)="closeModal()" class="cancel" expand="block" padding>
+    {{ 'CANCEL' | translate }}
+  </ion-button> -->
+</ion-content>

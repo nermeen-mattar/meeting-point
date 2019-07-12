@@ -1,0 +1,28 @@
+@import "../../../../theme/variables.scss";
+
+.event-details {
+  padding-bottom: 20px;
+
+  &__comment-label {
+    width: 300px;
+  }
+
+  &__main-details {
+    margin-bottom: 20px;
+  }
+
+  [name=information-circle] {
+    font-size: 34px;
+  }
+  &__value {
+    font-weight: lighter;
+    &--full {
+      flex: 1;
+      padding: 6px 0;
+    }
+  }
+  &__spinner {
+    text-align: center;
+    margin: 8rem;
+  }
+}

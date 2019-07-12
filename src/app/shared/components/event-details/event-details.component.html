@@ -1,0 +1,192 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{'EVENT.EVENT' | translate}} {{'DETAILS' | translate}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="event-details" *ngIf="!displaySpinner">
+    <ion-item-group class="event-details__main-details">
+      <ion-item>
+        <ion-label>
+          {{"EVENT.EVENT_NAME" | translate }}:
+        </ion-label>
+        <ion-text slot="end">
+          <span class="event-details__value">
+            {{eventDetails.eventName}}
+          </span>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          {{"EVENT.DATE" | translate }}:
+        </ion-label>
+        <ion-text slot="end">
+          <span class="event-details__value">
+            {{ dateAdapterService.getFormattedDate(eventDetails.startTime, userTimezone) }}
+          </span>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          {{"EVENT.TIME" | translate }}:
+        </ion-label>
+        <ion-text slot="end">
+          <span class="event-details__value">
+            {{ dateAdapterService.getFormattedTime(eventDetails.startTime, userTimezone) }} - {{ dateAdapterService.getFormattedTime(eventDetails.endTime, userTimezone)  }}
+          </span>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          {{"EVENT.TYPE" | translate }}:
+        </ion-label>
+        <ion-text slot="end">
+          <span class="event-details__value">
+            {{(eventDetails.type === 1 ? "EVENT.PARTICIPATION" : "EVENT.CANCELATION") | translate}}
+          </span>
+        </ion-text>
+      </ion-item>
+
+      <ion-item *ngIf="eventDetails.hasMaxCriticalValue">
+        <ion-label>
+          <ng-container *ngIf="eventDetails.hasMaxCriticalValue">
+            {{"EVENT.MAX" | translate}}:
+          </ng-container>
+        </ion-label>
+        <ion-text slot="end">
+          <span class="event-details__value">{{eventDetails.maxCriticalValue}}</span>
+        </ion-text>
+      </ion-item>
+      <ion-item *ngIf="eventDetails.hasMinCriticalValue">
+        <ion-label>
+          <ng-container *ngIf="eventDetails.hasMinCriticalValue">
+              {{"EVENT.MIN" | translate}}:
+            </ng-container>
+        </ion-label>
+        <ion-text slot="end">
+          <span class="event-details__value">{{eventDetails.minCriticalValue}}</span>
+        </ion-text>
+      </ion-item>
+
+      <ion-item *ngIf="eventDetails.hasMinCriticalValue">
+        <ion-label>
+          <ng-container *ngIf="eventDetails.hasMinCriticalValue">
+              {{"EVENT.PRESENT" | translate}}:
+          </ng-container>
+        </ion-label>
+        <ion-text slot="end">
+          <span class="event-details__value">{{eventDetails?.present.length}}
+            <ion-icon name="close-circle" color="danger" class="app-events__icon" *ngIf="(eventDetails.hasMinCriticalValue && eventDetails.minCriticalValue > eventDetails?.present.length) ||
+              (eventDetails.hasMaxCriticalValue && eventDetails.maxCriticalValue < eventDetails?.present.length); else success"></ion-icon>
+            <ng-template #success>
+              <ion-icon slot="end" name="checkmark-circle" color="success" class="app-events__icon"></ion-icon>
+            </ng-template>
+          </span>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          {{"EVENT.LOCATION" | translate }}:
+        </ion-label>
+        <ion-text slot="end">
+          <span class="event-details__value">
+            {{eventDetails.location | translate}}
+          </span>
+        </ion-text>
+      </ion-item>
+
+      <ion-item *ngIf="eventDetails.comment">
+        <ion-label position="fixed">
+          {{"EVENT.COMMENT" | translate }}:
+        </ion-label>
+        <ion-text class="event-details__value event-details__value--full ion-text-right" text-wrap>
+          {{eventDetails.comment}}
+        </ion-text>
+      </ion-item>
+      <!-- <ion-item-divider>
+        <ion-label>
+          Events Engagements
+        </ion-label>
+        <ion-icon slot="end" name="arrow-up" color="primary" (click)="displayMemberInfo(memberInfo)"></ion-icon>
+      </ion-item-divider> -->
+    </ion-item-group>
+
+
+    <ion-item-group>
+      <!-- descoped for MVP -->
+      <!-- <ion-searchbar animated [(ngModel)]="searchTerm" animated placeholder="Search"></ion-searchbar> -->
+
+      <ion-item-divider>
+        <ion-label>
+          {{'EVENT.PARTICIPATIONS' | translate}}
+          <span *ngIf="eventDetails && eventDetails.present && !searchTerm">
+            ({{eventDetails?.present.length}})
+          </span>
+        </ion-label>
+      </ion-item-divider>
+
+      <!-- Participation list -->
+      <ion-list>
+        <ion-item *ngFor="let memberInfo of eventDetails?.present | searchUser: searchTerm">
+          <ion-toggle slot="start" class="event-details__toggle" color="primary" *ngIf="isTeamAdmin" color="primary"
+            #participationToggler (ionChange)="toggleMemberParticipation(false, memberInfo, participationToggler)"
+            [checked]="true">
+          </ion-toggle>
+          <ion-label>
+            <ion-text>
+              <h4 class="event-details__value">
+                {{memberInfo.member.firstName}} {{memberInfo.member.lastName}}
+              </h4>
+              <p class="event-details__value"> {{memberInfo.member.mail}} </p>
+            </ion-text>
+          </ion-label>
+          <ion-icon slot="end" class="event-details__info-button" name="information-circle" color="primary" (click)="displayMemberDetails(memberInfo, participationTypes.present)"></ion-icon>
+
+        </ion-item>
+      </ion-list>
+
+      <!-- Cancelation list -->
+      <ion-item-divider>
+        <ion-label>
+          {{'EVENT.CANCELATIONS' | translate}}
+          <span *ngIf="eventDetails && eventDetails.present && !searchTerm">
+            ({{eventDetails?.absent.length}})
+          </span>
+        </ion-label>
+      </ion-item-divider>
+      <ion-list>
+        <ion-item *ngFor="let memberInfo of eventDetails?.absent | searchUser: searchTerm">
+          <ion-toggle slot="start" class="event-details__toggle" color="primary" *ngIf="isTeamAdmin" color="primary"
+            #cancelationToggler (ionChange)="toggleMemberParticipation(true, memberInfo, cancelationToggler)"
+            checked="false">
+          </ion-toggle>
+          <ion-label>
+            <ion-text>
+              <h4 class="event-details__value">
+                {{memberInfo.member.firstName}} {{memberInfo.member.lastName}}
+              </h4>
+              <p class="event-details__value"> {{memberInfo.member.mail}} </p>
+            </ion-text>
+          </ion-label>
+          <ion-icon slot="end" name="information-circle" color="primary" (click)="displayMemberDetails(memberInfo, participationTypes.absent )"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-item-group>
+  </div>
+
+  <div class="event-details__spinner" *ngIf="displaySpinner">
+    <ion-spinner name="lines" color="primary" name="crescent"></ion-spinner>
+  </div>
+</ion-content>

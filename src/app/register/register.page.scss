@@ -1,0 +1,23 @@
+@import "./../../theme/variables.scss";
+
+.register-page {
+  &__field {
+    &__error {
+      font-size: 12px;
+    }
+  }
+
+  &__link {
+    color: $mp-color-base-bright-shade-3;
+  }
+
+  &__confirm-terms {
+    display: flex;
+    align-items: center;
+    &__checkbox {
+      margin-left: 1.2rem;
+      margin-right: 1.8rem;
+
+    }
+  }
+}

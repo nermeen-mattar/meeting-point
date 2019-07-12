@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+        {{ 'TEAM.TEAM_LOGS' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="team-logs" padding>
+  <ion-item class="team-logs__inner-header">
+    <ion-label class="team-logs__inner-header__team">{{ 'TEAM.TEAM' | translate }}</ion-label>
+    <ion-select class="team-logs__inner-header__select-team" [(ngModel)]="selectedTeamId" (ionChange)="teamChanged()" ok-text="ok" cancel-text="cancel">
+      <ion-select-option *ngFor="let team of userTeams; let i = index" [value]="team.teamId">
+        {{ team.teamName }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-content class="team-logs__list-container">
+    <ion-list>
+      <ion-item>
+        <ion-grid class="team-logs__headings">
+          <ion-row>
+            <ion-col size="6" size-sm>
+              <div>Member</div>
+            </ion-col>
+            <ion-col size="6" size-sm>
+              <div>Date, Time</div>
+            </ion-col>
+            <ion-col size="6" size-sm>
+              <div>Event</div>
+            </ion-col>
+            <ion-col size="6" size-sm>
+              <div>Status</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <div class="team-logs__spinner" *ngIf="loadingData">
+        <ion-spinner name="lines" color="primary" name="crescent"></ion-spinner>
+      </div>
+      <ion-item class="team-logs__log-item" *ngFor="let log of teamLogs">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6" size-sm>
+              <div>
+                {{log.firstName}} {{log.lastName}}
+              </div>
+            </ion-col>
+            <ion-col size="6" size-sm>
+              <div>
+                {{log.updatedAt}}
+              </div>
+            </ion-col>
+            <ion-col size="6" size-sm>
+              <div class="team-logs__log-item__event-name" (click)="displayEventDetailsModal(log.eventId)">
+                {{log.eventName}}
+              </div>
+            </ion-col>
+            <ion-col size="6" size-sm>
+              <div>
+                {{log.action}}
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <span slot="end">
+          <ion-label>
+            <ion-icon class="team-logs__list-container__log-list__icon" [name]="log.action === 'participate' ? 'checkmark-circle' : 'close-circle'" [color]="log.action === 'participate' ? 'success':'danger'"></ion-icon>
+          </ion-label>
+        </span>
+      </ion-item>
+      <div class="team-logs__no-logs" *ngIf="teamLogs.length === 0 && !loadingData">
+        {{'TEAM_LOGS.NO_LOGS' | translate}}
+      </div>
+    </ion-list>
+    <!-- <ion-list *ngFor="let team of dummyTeamLogs" class="team-logs__list-container__log-list">
+      <ion-item>
+        <ion-label>
+          <ion-text text-wrap>{{ team.log | translate }}</ion-text>
+        </ion-label>
+        <span slot="end">
+          <ion-label>
+            <ion-icon class="team-logs__list-container__log-list__icon" [name]="team.approve? 'checkmark-circle' : 'close-circle'" [color]="team.approve? 'success':'danger'"></ion-icon>
+          </ion-label>
+        </span>
+      </ion-item>
+    </ion-list> -->
+    <!-- <ion-item class="team-logs__list-container__pagination" lines="none">
+      <ion-button slot="start" color="primary"><ion-icon name="arrow-back"></ion-icon>{{ 'PREV' | translate }}</ion-button>
+      <ion-text text-wrap class="team-logs__list-container__pagination__pagination-text">1 - 100 {{ 'OF' | translate }} 100s</ion-text>
+      <ion-button slot="end" color="primary">{{ 'NEXT' | translate }}<ion-icon name="arrow-forward"></ion-icon></ion-button>
+    </ion-item> -->
+  </ion-content>
+  <ion-spinner class="team-logs__mp-page-spinner" name="crescent" color="primary" *ngIf="displaySpinner"></ion-spinner>
+</ion-content>

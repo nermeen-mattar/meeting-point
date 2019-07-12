@@ -1,0 +1,15 @@
+.team-list {
+  &__member, &__admin {
+    margin: 10px 10px 10px 0;
+  }
+  &__not-found {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  &__mp-page-spinner {
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+  }
+}

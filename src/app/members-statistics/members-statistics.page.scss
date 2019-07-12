@@ -1,0 +1,28 @@
+@import "./../../theme/variables.scss";
+
+.app-members-statistics {
+  &__select-team {
+    max-width: 100%;
+  }
+  &__not-found {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  &__mp-page-spinner {
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+  }
+  &__list {
+    &__text {
+      margin-right: 8px;
+    }
+    &__icon {
+      position: relative;
+      top: 4px;
+      color: $primary-color;
+      font-size: 16px;
+    }
+  }
+}

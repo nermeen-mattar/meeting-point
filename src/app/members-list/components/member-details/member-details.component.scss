@@ -1,0 +1,39 @@
+@import "../../../../theme/variables.scss";
+
+.member-details {
+  &__main-details {
+    padding: 0 15px;
+    &__visible {
+      visibility: visible;
+      background-color: $mp-color-gray-shade-10;
+    }
+    &__hide {
+      visibility: hidden;
+      background-color: $mp-color-gray-shade-10;
+    }
+    &__phone, &__mail, &__roles, &__popover-icon {
+      padding-right: 6px;
+      position: relative;
+      top: 3px;
+    }
+    &__member, &__admin {
+      font-weight: 500;
+    }
+    &__member {
+      margin-right: 6px;
+      color: $mp-color-gray-shade-10;
+    }
+    &__user-mail {
+      position: relative;
+      bottom: 3px;
+      border-bottom: 1px solid $mp-color-base-bright-shade-2;
+      color: $mp-color-base-bright-shade-2;
+      word-break: break-all;
+    }
+  }
+  &__mp-page-spinner {
+    display: block;
+    margin: auto;
+    margin-top: 50px;
+  }
+}

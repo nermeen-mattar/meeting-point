@@ -1,0 +1,90 @@
+<ion-app>
+  <ion-split-pane>
+    <ion-menu>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Team Center</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list [hidden]="!(loginState$ | async)">
+          <ion-menu-toggle auto-hide="false" *ngFor="let page of loggedInStateMenuItems">
+            <ion-item [routerDirection]="'root'" [routerLink]="[page.url]">
+              <ion-icon color="primary" slot="start" [name]="page.icon"></ion-icon>
+              <ion-label>
+                {{page.title | translate}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle *ngIf="hasAdminRole" auto-hide="false">
+            <ion-item [routerLink]="['/team-logs']">
+              <ion-icon color="primary" slot="start" name="list"></ion-icon>
+              <ion-label>
+                {{ 'TEAM.TEAM_LOGS' | translate }}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle *ngIf="hasAdminRole" auto-hide="false">
+            <ion-item [routerLink]="['/members-statistics']">
+              <ion-icon color="primary" slot="start" name="stats"></ion-icon>
+              <ion-label>
+                {{ 'MEMBER.MEMBERS_STATISTICS' | translate }}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/user-settings']">
+              <ion-icon color="primary" slot="start" name="settings"></ion-icon>
+              <ion-label>
+                {{ 'USER.SETTINGS' | translate }}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="showLanguageOptions()">
+              <ion-icon color="primary" slot="start" name="globe"></ion-icon>
+              <ion-label>
+                {{ 'LANGUAGE.LANGUAGE' | translate}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerLink]="['/donate']">
+              <ion-icon color="primary" slot="start" name="cafe"></ion-icon>
+              <ion-label>
+                {{ 'DONATE.DONATE' | translate}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle class="logout" auto-hide="false">
+            <ion-item class="logout" (click)="logout()">
+              <ion-icon color="primary" slot="start" name="exit"></ion-icon>
+              <ion-label>
+                {{ 'LOG_OUT' | translate}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+        <ion-list [hidden]="!!(loginState$ | async)">
+          <ion-menu-toggle auto-hide="false" *ngFor="let page of loggedOutStateMenuItems">
+            <ion-item [routerDirection]="'root'" [routerLink]="[page.url]">
+              <ion-icon color="primary" slot="start" [name]="page.icon"></ion-icon>
+              <ion-label>
+                {{page.title | translate}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="showLanguageOptions()">
+              <ion-icon color="primary" slot="start" name="globe"></ion-icon>
+              <ion-label>
+                {{ 'LANGUAGE.LANGUAGE' | translate}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet main></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

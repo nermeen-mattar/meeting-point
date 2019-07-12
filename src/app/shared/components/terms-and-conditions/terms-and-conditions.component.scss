@@ -1,0 +1,22 @@
+@import './../../../../theme/public_pages';
+
+.app-terms-and-conditions {
+  padding: 24px;
+  border-radius: 4px;
+  &__close-icon {
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    width: 100%;
+    right: 0;
+    top: 0;
+    z-index: 99;
+    background: #fff;
+    padding-top: 10px;
+    padding-right: 4px;
+  }
+  &__section {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+}

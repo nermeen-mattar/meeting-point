@@ -1,0 +1,81 @@
+@import "../../theme/variables.scss";
+@import "../../theme/elements.scss";
+
+.app-events {
+  &__header {
+    display:flex;
+    justify-content: center;
+  }
+
+  &__top-action-btn {
+    margin-top: 10px;
+  }
+
+  &__list {
+    margin-top: 20px;
+    &__item {
+      &__toggle {
+        padding-right: 15px;
+      }
+      &__options {
+        &__option {
+          @extend .mp-item-sliding-option;
+        }
+      }
+    }
+  }
+  &__dropdown {
+    min-width: 66%;
+  }
+  &__top-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__event-name {
+    font-weight: 500;
+  }
+
+  &__members {
+    min-width: 188px;
+    margin: 0rem 1rem;
+  }
+
+  &__icon {
+    font-size: 1.3rem;
+    margin: 0 0.5rem;
+  }
+  &__edit-icon {
+    height: 100%;
+  }
+
+  &__buttons-container {
+    align-items: center;
+  }
+
+  &__spinner {
+    text-align: center;
+    margin: 8rem;
+  }
+  &__not-found {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .toggle_disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+}
+
+
+[text-wrap].sc-ion-label-ios-h {
+  padding-left: 10px;
+}
+
